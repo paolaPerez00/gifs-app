@@ -4,7 +4,7 @@ interface Props {
     gifs: Gif[]
 }
 
-const GifList = ({ gifs }: Props) => {
+export const GifList = ({ gifs }: Props) => {
     return (
         <div className='gifs-container'>
             {
@@ -21,5 +21,3 @@ const GifList = ({ gifs }: Props) => {
         </div>
     )
 }
-
-export default GifList
