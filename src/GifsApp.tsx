@@ -1,20 +1,29 @@
 import { useState } from "react"
 import { GifList } from "./gifs/components/GifList"
 import { PreviousSearches } from "./gifs/components/PreviousSearches"
-import { mockGifs } from "./mock-data/gifs.mock"
 import { CustomHeader } from "./shared/components/CustomHeader"
 import { SearchBar } from "./shared/components/SearchBar"
+import { getGifsByQuery } from "./gifs/actions/get-gifs-by-query.action"
+import type { Gif } from './gifs/interfaces/gif.interface';
 
 export const GifsApp = () => {
 
-    const [previousTerms, setpreviousTerms] = useState(['goku'])
+    const [gifs, setGifs] = useState<Gif[]>([])
+    const [previousTerms, setpreviousTerms] = useState<string[]>([])
 
     const handleTermsClicked = (term: string) => {
         console.log({ term })
     }
 
-    const handleSearch = (query: string) => {
-        console.log("view ", query)
+    const handleSearch = async (query: string) => {
+        query = query.trim().toLowerCase();
+        if (query.length === 0) return;
+        if (previousTerms.includes(query)) return;
+
+        setpreviousTerms([query, ...previousTerms].splice(0, 7))
+
+        const listGifs = await getGifsByQuery(query);
+        setGifs(listGifs);
     }
 
     return (
@@ -28,7 +37,7 @@ export const GifsApp = () => {
                 searches={previousTerms}
                 onLabelClicked={handleTermsClicked}
             />
-            <GifList gifs={mockGifs} />
+            <GifList gifs={gifs} />
         </>
     )
 }
