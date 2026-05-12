@@ -3,7 +3,7 @@ import { useEffect, useState, type KeyboardEvent } from "react";
 interface Props {
     placeholder: string;
     textButton?: string;
-    onQuery?: (query: string) => void;
+    onQuery: (query: string) => void;
 }
 
 export const SearchBar = ({ placeholder, textButton = 'Buscar', onQuery }: Props) => {
